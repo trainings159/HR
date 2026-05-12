@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: #ffffff;
+    color: #0f172a;
+}
+
+/* simple utility only */
+.card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+/* optional subtle divider */
+.divider {
+    border-top: 1px solid #e2e8f0;
+}
