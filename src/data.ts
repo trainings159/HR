@@ -24,6 +24,38 @@ export const MOCK_NOTIFICATIONS: Notification[] = [
         message: 'Q3 Townhall starts in 30 minutes. Don\'t forget to join!',
         timestamp: '2026-05-12T10:00:00Z',
         isRead: false,
+    },
+    {
+        id: 'n3',
+        type: 'event',
+        title: 'Upcoming Event',
+        message: 'Q3 Townhall starts in 30 minutes. Don\'t forget to join!',
+        timestamp: '2026-05-12T10:00:00Z',
+        isRead: false,
+    },
+    {
+        id: 'n3',
+        type: 'event',
+        title: 'Upcoming Event',
+        message: 'Q3 Townhall starts in 30 minutes. Don\'t forget to join!',
+        timestamp: '2026-05-12T10:00:00Z',
+        isRead: false,
+    },
+    {
+        id: 'n3',
+        type: 'event',
+        title: 'Upcoming Event',
+        message: 'Q3 Townhall starts in 30 minutes. Don\'t forget to join!',
+        timestamp: '2026-05-12T10:00:00Z',
+        isRead: false,
+    },
+    {
+        id: 'n3',
+        type: 'event',
+        title: 'Upcoming Event',
+        message: 'Q3 Townhall starts in 30 minutes. Don\'t forget to join!',
+        timestamp: '2026-05-12T10:00:00Z',
+        isRead: false,
     }
 ];
 
@@ -67,7 +99,7 @@ export const MOCK_USERS: User[] = [
     {
         id: 'u1',
         name: 'Sarah Connor',
-        role: 'Senior Software Engineer',
+        role: 'user',
         department: 'Engineering',
         email: 'sarah.c@nexasphere.com',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
@@ -81,7 +113,7 @@ export const MOCK_USERS: User[] = [
     {
         id: 'u2',
         name: 'Marcus Wright',
-        role: 'Product Designer',
+        role: 'user',
         department: 'Design',
         email: 'marcus.w@nexasphere.com',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus',
@@ -96,7 +128,7 @@ export const MOCK_USERS: User[] = [
     {
         id: 'u3',
         name: 'Kyle Reese',
-        role: 'HR Manager',
+        role: 'admin',
         department: 'HR',
         email: 'kyle.r@nexasphere.com',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kyle',
@@ -112,7 +144,7 @@ export const MOCK_USERS: User[] = [
     {
         id: 'u4',
         name: 'Dani Ramos',
-        role: 'Marketing Lead',
+        role: 'user',
         department: 'Marketing',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Dani',
         email: 'dani.r@nexasphere.com',
@@ -125,7 +157,7 @@ export const MOCK_USERS: User[] = [
     {
         id: 'u5',
         name: 'Grace Harper',
-        role: 'Sales Executive',
+        role: 'user',
         department: 'Sales',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Grace',
         email: 'grace.h@nexasphere.com',
@@ -236,6 +268,17 @@ export const MOCK_POSTS: Post[] = [
         createdAt: '2026-05-11T14:30:00Z',
         likes: 42,
         replies: 12
+    },
+    {
+        id: 'p3',
+        authorId: 'u3',
+        title: 'How to improve collaboration in teams?',
+        content: 'We should improve our team collaboration. We should use some project management tools to track our progress and communicate with each other.',
+        category: 'HR',
+        tags: ['HR', 'Collaboration'],
+        createdAt: '2026-05-12T14:30:00Z',
+        likes: 100,
+        replies: 24
     }
 ];
 

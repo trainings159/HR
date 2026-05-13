@@ -12,28 +12,25 @@ import { RecognitionPage } from './components/Recognition';
 import { KnowledgeHub } from './components/KnowledgeHub';
 import { Forum } from './components/Forum';
 import { ProfileView } from './components/Profile';
-import { Leaderboard } from './components/Leaderboard'
+import { Leaderboard } from './components/Leaderboard';
+import { EventHub } from './components/EventHub';
+import { NotificationsCenter } from './components/NotificationsCenter';
 
 function AppContent() {
-  const { user } = useAuth(); // 👈 authentication check
+  const { user } = useAuth();
 
-  // 🚨 If NOT logged in → show login ONLY
-  if (!user) {
-    return <Login />;
-  }
+  if (!user) return <Login />;
 
-  // ✅ If logged in → show full app
   return (
-    <AppProvider>
-      <div className="flex min-h-screen bg-slate-50 text-slate-900 font-sans">
-        <Sidebar />
-        <div className="flex-1 flex flex-col min-w-0">
-          <PageContent />
-        </div>
+    <div className="flex min-h-screen bg-slate-50 text-slate-900 font-sans">
+      <Sidebar />
+      <div className="flex-1 flex flex-col min-w-0">
+        <PageContent />
       </div>
-    </AppProvider>
+    </div>
   );
 }
+
 
 function PageContent() {
   const { currentPage } = useApp();
@@ -48,6 +45,12 @@ function PageContent() {
 
       case 'recognition':
         return <RecognitionPage />;
+
+      case 'events':
+        return <EventHub />;
+
+      case 'notifications':
+        return <NotificationsCenter />;
 
       case 'hub':
         return <KnowledgeHub />;
@@ -77,9 +80,8 @@ function PageContent() {
 
             <p className="text-slate-500 max-w-sm text-sm">
               The <span className="font-semibold text-slate-900">
-                {currentPage.charAt(0).toUpperCase() + currentPage.slice(1)}
-              </span>{' '}
-              section is not available.
+                {String(currentPage).charAt(0).toUpperCase() + String(currentPage).slice(1)}
+              </span>{' '}section is not available.
             </p>
 
             <button
@@ -104,7 +106,9 @@ function PageContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
     </AuthProvider>
   );
 }

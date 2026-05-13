@@ -9,8 +9,8 @@ import {
     ShieldCheck,
     Calendar,
     X,
-    LogOut,
-    ChevronRight
+    Bell,
+    LogOut
 } from 'lucide-react';
 import type { Page, User } from '../../types';
 import { useAuth } from '../../store/AuthContext';
@@ -36,7 +36,7 @@ type MenuItem = {
 };
 
 export function Sidebar() {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     const {
         currentPage,
         setCurrentPage,
@@ -51,7 +51,14 @@ export function Sidebar() {
         { id: 'hub', label: 'Knowledge', icon: BookOpen },
         { id: 'recognition', label: 'Recognition', icon: Award },
         { id: 'forums', label: 'Forum', icon: MessageSquare },
-        { id: 'leaderboard', label: 'Leaderboard', icon: Trophy }
+        { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
+        { id: 'events', label: 'Events', icon: Calendar },
+        { id: 'notifications', label: 'Notifications', icon: Bell },
+
+        ...(user?.role === 'admin'
+            ? [{ id: 'admin' as Page, label: 'Admin Center', icon: ShieldCheck }]
+            : []
+        )
     ];
 
     return (
@@ -115,16 +122,6 @@ export function Sidebar() {
                             </button>
                         );
                     })}
-
-                    {isAdmin && (
-                        <button
-                            onClick={() => setCurrentPage('admin')}
-                            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md mt-6"
-                        >
-                            <ShieldCheck size={16} />
-                            Admin Panel
-                        </button>
-                    )}
                 </nav>
 
                 {/* Profile */}

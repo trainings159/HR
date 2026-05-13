@@ -15,13 +15,13 @@ export function EventHub() {
         <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-8 min-h-screen">
 
             {/* HEADER */}
-            <div className="flex flex-col md:flex-row justify-between gap-4">
+            <div className="flex flex-col  md:flex-row justify-between gap-4">
                 <div>
-                    <Badge className="text-[10px] uppercase font-black mb-2">
+                    <Badge className="text-[10px] uppercase font-black mb-4">
                         Culture & Community
                     </Badge>
 
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-2xl font-bold text-slate-900 mt-6">
                         Event Hub
                     </h1>
 

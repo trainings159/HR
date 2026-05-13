@@ -1,10 +1,15 @@
-import React, { useMemo } from 'react';
-import { Trophy } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { Trophy, TrendingUp, TrendingDown } from 'lucide-react';
 
 import { MOCK_USERS } from '../data';
 import { Card, Avatar, Badge } from './ui/core';
 
 export function Leaderboard() {
+
+    const [filter, setFilter] = useState<'weekly' | 'monthly' | 'all'>('all');
+    const [dept, setDept] = useState('All');
+
+    const departments = ['All', 'Engineering', 'Design', 'HR', 'Sales', 'Marketing'];
 
     const sortedUsers = useMemo(() => {
         return [...MOCK_USERS].sort(
@@ -12,137 +17,146 @@ export function Leaderboard() {
         );
     }, []);
 
-    const top = sortedUsers.slice(0, 3);
-    const rest = sortedUsers.slice(3);
+    const filtered = useMemo(() => {
+        if (dept === 'All') return sortedUsers;
+        return sortedUsers.filter(u => u.department === dept);
+    }, [dept, sortedUsers]);
 
-    if (!sortedUsers.length) return null;
+    const top = filtered.slice(0, 3);
+    const rest = filtered.slice(3);
+
+    const avgKudos =
+        filtered.reduce((acc, u) => acc + (u.kudosReceived ?? 0), 0) /
+        (filtered.length || 1);
 
     return (
-        <div className="p-6 space-y-8 max-w-5xl mx-auto">
+        <div className="p-6 space-y-6 max-w-6xl mx-auto">
 
-            {/* HEADER */}
-            <div className="text-center space-y-2">
-                <Badge className="bg-amber-100 text-amber-700 text-xs">
-                    Engagement Season
+            {/* HEADER (consistent system style) */}
+            <div className="bg-slate-900 text-white p-8 rounded-2xl space-y-4">
+
+                <Badge className="text-[10px] uppercase font-bold">
+                    Engagement Dashboard
                 </Badge>
 
-                <h1 className="text-2xl font-bold text-slate-900">
+                <h1 className="text-2xl font-bold">
                     Leaderboard
                 </h1>
 
-                <p className="text-sm text-slate-500">
-                    Recognizing top contributors across the platform.
+                <p className="text-sm text-slate-300">
+                    Recognizing top contributors and engagement across the organization.
                 </p>
+
+                {/* mini stats */}
+                <div className="flex flex-wrap gap-4 text-xs text-slate-400">
+
+                    <span>👥 {filtered.length} Employees</span>
+                    <span>⭐ Avg {avgKudos.toFixed(1)} Kudos</span>
+                    <span>🏆 Top Performer: {top[0]?.name}</span>
+
+                </div>
+
+            </div>
+
+            {/* FILTERS */}
+            <div className="flex flex-wrap gap-2 justify-between">
+
+                {/* time filter */}
+                <div className="flex gap-2">
+                    {['all', 'weekly', 'monthly'].map((f) => (
+                        <button
+                            key={f}
+                            onClick={() => setFilter(f as any)}
+                            className={`text-xs font-bold px-3 py-1.5 rounded-full border ${filter === f
+                                    ? 'bg-slate-900 text-white border-slate-900'
+                                    : 'bg-white text-slate-600'
+                                }`}
+                        >
+                            {f.toUpperCase()}
+                        </button>
+                    ))}
+                </div>
+
+                {/* dept filter */}
+                <div className="flex gap-2 overflow-x-auto">
+                    {departments.map(d => (
+                        <button
+                            key={d}
+                            onClick={() => setDept(d)}
+                            className={`text-xs px-3 py-1.5 rounded-full border ${dept === d
+                                    ? 'bg-indigo-600 text-white border-indigo-600'
+                                    : 'bg-white text-slate-600'
+                                }`}
+                        >
+                            {d}
+                        </button>
+                    ))}
+                </div>
+
             </div>
 
             {/* TOP 3 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-                {/* 2ND */}
-                {top[1] && (
-                    <Card className="p-6 text-center">
-                        <div className="relative inline-block">
-                            <Avatar
-                                src={top[1].avatar}
-                                name={top[1].name}
-                                size="lg"
-                            />
-                            <span className="absolute -top-2 -right-2 w-6 h-6 text-xs font-bold bg-slate-200 rounded-full flex items-center justify-center">
-                                2
-                            </span>
+                {top.map((user, idx) => (
+                    <Card
+                        key={user.id}
+                        className={`p-6 text-center relative ${idx === 0 ? 'border-indigo-300 shadow-md' : ''
+                            }`}
+                    >
+
+                        {/* rank badge */}
+                        <span className="absolute top-3 right-3 text-xs font-bold text-slate-400">
+                            #{idx + 1}
+                        </span>
+
+                        <Avatar
+                            src={user.avatar}
+                            name={user.name}
+                            size={idx === 0 ? 'xl' : 'lg'}
+                        />
+
+                        <p className="font-bold mt-3">{user.name}</p>
+
+                        <p className="text-xs text-slate-400 uppercase">
+                            {user.department}
+                        </p>
+
+                        <div className="mt-4 text-2xl font-bold">
+                            {user.kudosReceived}
                         </div>
 
-                        <p className="font-semibold mt-3">{top[1].name}</p>
-                        <p className="text-xs text-slate-400">{top[1].role}</p>
-
-                        <p className="mt-4 text-xl font-bold">
-                            {top[1].kudosReceived}
-                        </p>
-                        <p className="text-[10px] uppercase text-slate-400">
-                            Points
-                        </p>
-                    </Card>
-                )}
-
-                {/* 1ST */}
-                {top[0] && (
-                    <Card className="p-6 text-center border border-indigo-200">
-
-                        <div className="relative inline-block">
-                            <Avatar
-                                src={top[0].avatar}
-                                name={top[0].name}
-                                size="xl"
-                            />
-                            <span className="absolute -top-2 -right-2 w-7 h-7 bg-indigo-500 text-white rounded-full flex items-center justify-center">
-                                <Trophy size={14} />
-                            </span>
+                        {/* trend (mock) */}
+                        <div className="flex justify-center mt-2 text-xs text-green-600 gap-1">
+                            <TrendingUp size={14} />
+                            Rising
                         </div>
 
-                        <p className="font-bold mt-3">{top[0].name}</p>
-                        <p className="text-xs text-indigo-500 uppercase">
-                            {top[0].role}
-                        </p>
-
-                        <p className="mt-5 text-3xl font-bold">
-                            {top[0].kudosReceived}
-                        </p>
-
-                        <Badge className="mt-3 text-xs">
-                            Champion
-                        </Badge>
-                    </Card>
-                )}
-
-                {/* 3RD */}
-                {top[2] && (
-                    <Card className="p-6 text-center">
-
-                        <div className="relative inline-block">
-                            <Avatar
-                                src={top[2].avatar}
-                                name={top[2].name}
-                                size="lg"
-                            />
-                            <span className="absolute -top-2 -right-2 w-6 h-6 text-xs font-bold bg-orange-100 text-orange-600 rounded-full flex items-center justify-center">
-                                3
-                            </span>
-                        </div>
-
-                        <p className="font-semibold mt-3">{top[2].name}</p>
-                        <p className="text-xs text-slate-400">{top[2].role}</p>
-
-                        <p className="mt-4 text-xl font-bold">
-                            {top[2].kudosReceived}
-                        </p>
-
-                        <p className="text-[10px] uppercase text-slate-400">
-                            Points
-                        </p>
+                        {idx === 0 && (
+                            <Badge className="mt-3">Top Performer</Badge>
+                        )}
 
                     </Card>
-                )}
+                ))}
 
             </div>
 
             {/* LIST */}
             <Card className="overflow-hidden">
 
-                {/* HEADER ROW */}
                 <div className="px-6 py-3 text-xs font-bold uppercase text-slate-400 border-b flex justify-between">
                     <span>Rank</span>
                     <span>Employee</span>
-                    <span>Department</span>
+                    <span>Dept</span>
                     <span>Points</span>
                 </div>
 
-                {/* ROWS */}
                 <div className="divide-y">
 
                     {rest.map((user, idx) => (
                         <div
                             key={user.id}
-                            className="px-6 py-3 flex justify-between items-center hover:bg-slate-50"
+                            className="px-6 py-3 flex items-center justify-between hover:bg-slate-50"
                         >
 
                             <span className="text-slate-400 font-bold w-10">
@@ -155,6 +169,7 @@ export function Leaderboard() {
                                     name={user.name}
                                     size="sm"
                                 />
+
                                 <div>
                                     <p className="text-sm font-semibold">
                                         {user.name}
@@ -179,6 +194,7 @@ export function Leaderboard() {
                 </div>
 
             </Card>
+
         </div>
     );
 }

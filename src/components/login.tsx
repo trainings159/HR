@@ -1,11 +1,30 @@
 import React, { useState } from 'react';
 import { useAuth } from '../store/AuthContext';
+import { useApp } from '../store';
+import { MOCK_USERS } from '../data';
 import { Button, Card } from './ui/core';
+
 
 export function Login() {
     const { login } = useAuth();
+    const { setCurrentPage } = useApp();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const handleLogin = () => {
+        const success = login(email, password);
+
+        if (!success) return;
+
+        const user = MOCK_USERS.find(u => u.email === email);
+
+        if (user?.role === 'admin') {
+            setCurrentPage('admin');
+        } else {
+            setCurrentPage('dashboard');
+        }
+    };
 
     return (
         <div className="h-screen flex items-center justify-center bg-slate-50">
@@ -26,10 +45,8 @@ export function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <Button
-                    onClick={() => login(email, password)}
-                    className="w-full"
-                >
+                {/* ✅ FIXED */}
+                <Button onClick={handleLogin} className="w-full">
                     Login
                 </Button>
 

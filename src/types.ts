@@ -1,7 +1,7 @@
 export interface User {
     id: string;
     name: string;
-    role: string;
+    role: 'admin' | 'user' | 'hr';
     department: Department;
     email: string;
     avatar: string;
@@ -113,6 +113,8 @@ export interface Notification {
 export type Page =
     | 'dashboard'
     | 'directory'
+    | 'events'
+    | 'notifications'
     | 'hub'
     | 'recognition'
     | 'forums'
